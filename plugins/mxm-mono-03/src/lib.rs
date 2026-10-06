@@ -45,8 +45,9 @@ pub const NAME: &str = plugin_name!();
 /// `plugin_name!` above: one line, one decision.
 pub const CLAP_ID: &str = concat!("dk.mxm.", plugin_name!());
 
-// Public for `apps/mxm-layout-lab` on the `dynamic-layout` branch: the lab draws these real
-// cards outside a host. Nothing else about them changes, and the shipped cdylib is unaffected.
+// Public for `apps/mxm-layout-lab` (in the private archive since the split) on the
+// `dynamic-layout` branch: the lab draws these real cards outside a host. Nothing else about them
+// changes, and the shipped cdylib is unaffected.
 pub mod editor;
 pub mod params;
 pub mod preset;
@@ -1103,8 +1104,8 @@ mod baseline {
     const FS: f32 = 48_000.0;
     const BLOCK: usize = 64;
 
-    /// A plugin with every smoother activated (`docs/adding-an-instrument.md` gotcha 13), at the rate
-    /// `activate` would give it.
+    /// A plugin with every smoother activated (mxm-kit's `docs/adding-an-instrument.md` gotcha 13),
+    /// at the rate `activate` would give it.
     fn plugin() -> MxmMono03 {
         let mut plugin = MxmMono03::default();
         for (_, ptr, _) in plugin.params.param_map() {
@@ -1206,7 +1207,7 @@ mod baseline {
 
     /// Per-sample cost through the plugin's own path, on Init and on one fixed routed patch, three
     /// times each so the spread is visible. **A figure counts only from a quiet machine**
-    /// (`docs/code-review-notes.md` §3).
+    /// (mxm-kit's `docs/code-review-notes.md` §3).
     ///
     /// **The routed patch is `Acid line`**: Env Mod and Accent both well up and resonance at 0.85, so
     /// both of the paths the conversion rewrites carry signal, and the accent's sweep is the one that
@@ -1224,7 +1225,8 @@ mod baseline {
         println!();
     }
 
-    /// FNV-1a over the raw bits, as `plugins/mxm-mono-01/host-tests/tests/golden_audio.rs` computes it.
+    /// FNV-1a over the raw bits, as mxm-mono-01's
+    /// `plugins/mxm-mono-01/host-tests/tests/golden_audio.rs` computes it.
     fn digest(samples: &[f32]) -> String {
         let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
         for sample in samples {

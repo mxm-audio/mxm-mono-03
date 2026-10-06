@@ -195,7 +195,8 @@ pub const FULL_SCALE: [[f32; SOURCES]; TARGETS] = {
 };
 
 /// **What each source actually reaches, in frame units** — for reading an amount, never for
-/// evaluating one (`mxm-mono-00`'s rule, `crates/mxm-mono-00-dsp/src/routing.rs`).
+/// evaluating one (`mxm-mono-00`'s rule, in its repository's
+/// `crates/mxm-mono-00-dsp/src/routing.rs`).
 ///
 /// A scale is per unit of source, and not every source fills the unit: the accent circuit's filter
 /// output peaks at [`SWEEP_CEILING`] and is published at [`ACCENT_UNIT`] of it. Every other source
@@ -270,7 +271,7 @@ pub const fn init_amount(target: usize, source: usize) -> f32 {
 /// **Presence is what the DSP reads.** An absent route contributes nothing whatever its amount
 /// holds. **It travels beside the patch, not inside it**: `voice::Params` is `Copy` and rebuilt every
 /// sample, and a grid carried there is a memcpy per sample for values that change on a parameter event
-/// (`docs/code-review-notes.md` §7).
+/// (mxm-kit's `docs/code-review-notes.md` §7).
 #[derive(Debug, Clone, Copy)]
 pub struct Routing {
     /// Per target, per source: whether that route exists.
@@ -387,7 +388,7 @@ impl Graph {
     /// published it, so its slot still holds whatever it held the last time something did — which a
     /// route added to a running voice would read before this sample publishes it, from a different
     /// phrase and a span the host's buffers decided. Clearing the slot makes that read a deterministic
-    /// zero (`crates/mxm-modulation/AGENTS.md`, *A gated publication owes a clear*).
+    /// zero (mxm-kit's `crates/mxm-modulation/AGENTS.md`, *A gated publication owes a clear*).
     pub fn set_topology(&mut self, routing: &Routing) {
         for (live, present) in self.live.iter_mut().zip(routing.present.iter()) {
             live.build(present);

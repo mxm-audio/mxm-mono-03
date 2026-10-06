@@ -38,7 +38,7 @@
 //! # Evidence
 //!
 //! All of it secondary — see the plan's source list and
-//! `docs/modulation/`. No hardware was measured, here or in the sources. The
+//! mxm-kit's `docs/modulation/`. No hardware was measured, here or in the sources. The
 //! *structure* below is well attested across independent descriptions; the time
 //! constants are chosen to produce the attested behaviour and are the first thing
 //! a listening comparison should correct.
@@ -126,7 +126,7 @@ impl Accent {
     ///
     /// **A slid-into note must not call this.** A slide holds the gate open, so
     /// there is no new note to accent — see [`crate::voice`], which is where that
-    /// rule lives, and `docs/modulation/04-glide-and-portamento.md` §4.4, which
+    /// rule lives, and mxm-kit's `docs/modulation/04-glide-and-portamento.md` §4.4, which
     /// states it: *"no new attack, no new filter sweep, no accent on the second
     /// one."*
     pub fn engage(&mut self, amount: f32) {

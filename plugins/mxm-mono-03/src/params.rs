@@ -428,7 +428,7 @@ mod tests {
     use super::*;
 
     /// **Every parameter reads the same after the host's own round trip**: printed with its unit,
-    /// parsed, and printed again, it is the same text (`docs/code-review-notes.md` §6).
+    /// parsed, and printed again, it is the same text (mxm-kit's `docs/code-review-notes.md` §6).
     ///
     /// The host never hands a formatter a plain value. The CLAP wrapper's `value_to_text` and
     /// `text_to_value` carry a normalised value in `f64`, scaled by the step count, so a parsed number

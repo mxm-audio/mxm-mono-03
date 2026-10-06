@@ -3,6 +3,12 @@
 Required by `MXM_DESIGN_SYSTEM.md` §14, written before implementation. Answers the ten questions in
 order, then records the deliberate deviations.
 
+*Since the split (2026-10-06):* the design system, `MXM_CONTROL_MAP.md`, `docs/AGENTS.md` and
+`crates/ui` are mxm-kit's ([`docs/MXM_DESIGN_SYSTEM.md`](https://github.com/mxm-audio/mxm-kit/blob/main/docs/MXM_DESIGN_SYSTEM.md));
+`plugins/mxm-mono-01/src/telemetry.rs` is in mxm-mono-01's repository; `plans/AGENTS.md` is in the
+private archive. The no-image rule is mxm-kit's
+[`collection-rules.md`](https://github.com/mxm-audio/mxm-kit/blob/main/docs/collection-rules.md#research-boundary).
+
 **Instrument:** monophonic acid bass voice. Architecture inspired by the Roland TB-303; the
 interface is not.
 

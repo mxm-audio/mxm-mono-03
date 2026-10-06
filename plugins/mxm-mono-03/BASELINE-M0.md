@@ -1,6 +1,6 @@
 # mxm-mono-03 — pre-conversion reference, captured at M0
 
-`plans/plan-mxm-mono-03-modulation.md` M0. **These figures stop existing once the routing conversion
+`plans/plan-mxm-mono-03-modulation.md` (in the private archive) M0. **These figures stop existing once the routing conversion
 starts**, which is why they are captured first and committed rather than re-derived.
 
 Produced by `plugins/mxm-mono-03/src/lib.rs`'s `baseline` module, on the tree at `b0fa24c` with only
@@ -28,7 +28,7 @@ wrapper's event handling, telemetry and buffer plumbing. Factoring it out moved 
 ## Throughput
 
 Taken with nothing else building — this machine had run a conversion's builds all day, and
-`docs/code-review-notes.md` §3 is plain that a timing taken during a build is not a measurement — at
+mxm-kit's `docs/code-review-notes.md` §3 is plain that a timing taken during a build is not a measurement — at
 48 000 Hz in 64-sample blocks, note 48 held with its accent button pressed, three passes each:
 
 | Case | Pass 1 | Pass 2 | Pass 3 |
@@ -162,6 +162,10 @@ listening pass (plan B5) and not before.
 
 It moved by at most 6.0e-7 of full scale, 5.3e-7 of its peak against the M0 render, which is
 rounding; provisionally repinned at `555a7888da50f235`, as the test's own doc comment records.
+
+*Since the split (2026-10-06):* the player golden is this repository's
+`plugins/mxm-mono-03/host-tests/tests/golden_audio.rs` (repinned since, as its doc comment records),
+and its digest is compared on Windows only.
 
 ### Throughput
 

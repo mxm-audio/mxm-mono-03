@@ -6,8 +6,8 @@
 //! the next note** through the host's event path, that a release ends in exact silence — and, since
 //! the routing conversion, that **the routes are reached through the real callback by permanent
 //! name**: the Env Mod route opening a closed filter, and a route the machine never had, the mod
-//! wheel into the resonance (`docs/code-review-notes.md` §7, *arming a topology is not exercising a
-//! route*).
+//! wheel into the resonance (mxm-kit's `docs/code-review-notes.md` §7, *arming a topology is not
+//! exercising a route*).
 //!
 //! Skips, with the reason, when the bundle is not built: run
 //! `cargo xtask bundle mxm-mono-03 --release` first.

@@ -23,7 +23,7 @@
 //! fixed RC — there is no time control, so [`SLIDE_TIME_S`] is a constant.
 //!
 //! The owner asks for glide in the synth rather than the sequencer, and
-//! `docs/modulation/04-glide-and-portamento.md` §4.7.2 gives the reason: the lag is
+//! mxm-kit's `docs/modulation/04-glide-and-portamento.md` §4.7.2 gives the reason: the lag is
 //! a property of the voice, downstream of whatever generates notes, so putting it in
 //! a sequencer would deny it to anyone playing a keyboard. What a sequencer keeps is
 //! the per-transition *decision*, which is that switch.
@@ -35,7 +35,7 @@
 //! - it **retriggers neither envelope** — no new attack, no new filter sweep;
 //! - it **takes no accent**, because there is no note-on to accent.
 //!
-//! That is `docs/modulation/04-glide-and-portamento.md` §4.4 followed directly.
+//! That is mxm-kit's `docs/modulation/04-glide-and-portamento.md` §4.4 followed directly.
 //! Getting it wrong gives two notes with a pitch bend between them, which is a
 //! different and much more ordinary sound. **The contract is stated, not
 //! measured** — that chapter says so, and a listening comparison is what would
@@ -67,7 +67,7 @@ pub const DRIVE: f32 = 6.0;
 /// Makeup gain after the filter, compensating the ladder's droop.
 ///
 /// The droop is the topology and must not be "fixed" inside the filter — see
-/// `crates/mxm-mono-01-dsp/AGENTS.md`, which makes the same point about its own
+/// mxm-mono-01's `crates/mxm-mono-01-dsp/AGENTS.md`, which makes the same point about its own
 /// ladder. Compensating *outside* it keeps the filter honest.
 pub const MAKEUP: f32 = 1.4;
 
@@ -86,7 +86,7 @@ pub const CUTOFF_HIGH_HZ: f32 = 4_000.0;
 
 /// A DC blocker on the output only.
 ///
-/// `docs/filters/03-nonlinearity.md` §3.4: asymmetric saturation inside a feedback
+/// mxm-kit's `docs/filters/03-nonlinearity.md` §3.4: asymmetric saturation inside a feedback
 /// loop biases the operating point, and that wobble is part of what makes these
 /// circuits feel alive. Block DC at the **output**, never inside the loop, or you
 /// remove the effect you were modelling.
@@ -95,7 +95,7 @@ pub const DC_BLOCK_HZ: f32 = 5.0;
 /// Everything the voice is told, per block. Plain values only.
 ///
 /// **The routing is not in here.** `Params` is `Copy` and rebuilt every sample, so the route grid
-/// travels beside it as a [`Routing`] (`docs/code-review-notes.md` §7).
+/// travels beside it as a [`Routing`] (mxm-kit's `docs/code-review-notes.md` §7).
 #[derive(Debug, Clone, Copy)]
 pub struct Params {
     /// Master tuning, in semitones.
@@ -212,7 +212,7 @@ impl Default for Params {
 
 /// The hardware's slide time constant.
 ///
-/// **Published, not measured** — `docs/modulation/04-glide-and-portamento.md` §4.6
+/// **Published, not measured** — mxm-kit's `docs/modulation/04-glide-and-portamento.md` §4.6
 /// says so twice and warns against building a test around it. It is a starting
 /// point for a listening comparison, which is why no test here asserts it.
 ///
@@ -320,8 +320,9 @@ impl Voice {
     /// **Read-only, additive, and it earns its place the way the crate's contract requires**: the
     /// editor's brief §8 asks for a display of the climb across consecutive accents, and there is
     /// no other source — `accent` is private and `process` returns only a sample. See
-    /// `crates/mxm-mono-01-dsp/AGENTS.md`'s rule about telemetry accessors, which this follows: no
-    /// new state, no branch in the audio path, and the DSP does not know anyone is looking.
+    /// mxm-mono-01's `crates/mxm-mono-01-dsp/AGENTS.md` rule about telemetry accessors, which this
+    /// follows: no new state, no branch in the audio path, and the DSP does not know anyone is
+    /// looking.
     pub fn accent_sweep(&self) -> f32 {
         self.accent.sweep()
     }
@@ -867,7 +868,7 @@ mod tests {
 
     #[test]
     fn a_slid_destination_retriggers_nothing_and_takes_no_accent() {
-        // `docs/modulation/04-glide-and-portamento.md` §4.4: "no new attack, no new
+        // mxm-kit's `docs/modulation/04-glide-and-portamento.md` §4.4: "no new attack, no new
         // filter sweep, no accent on the second one." Getting this wrong gives two
         // notes with a bend between them, which is an ordinary sound.
         let p = Params {

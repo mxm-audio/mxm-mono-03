@@ -93,4 +93,4 @@ cargo xtask bundle mxm-mono-03 --release
 clap-validator validate "target/bundled/mxm-mono-03.clap"
 ```
 
-MIT licensed — see [LICENSE](LICENSE). All code is original.
+GPL-3.0-or-later — see the repository's [`LICENSE`](../../LICENSE). All code is original.

@@ -1,8 +1,8 @@
 //! The routing conversion's obligations, each a test that fails without the thing it names.
 //!
-//! `plans/plan-mxm-mono-03-modulation.md` §10, which is `docs/code-review-notes.md` §7 made specific
-//! to this machine. Every assertion was run against the defect it names; the plan's revision table
-//! records each mutation and what went red.
+//! `plans/plan-mxm-mono-03-modulation.md` §10, which is mxm-kit's `docs/code-review-notes.md` §7
+//! made specific to this machine. Every assertion was run against the defect it names; the plan's
+//! revision table records each mutation and what went red.
 
 // `let mut p = Params::default(); p.x = …` reads as the patch it is, as in the voice's own tests.
 #![allow(clippy::field_reassign_with_default)]
@@ -208,8 +208,8 @@ fn consecutive_accents_climb_through_the_routes() {
 }
 
 /// **A source that becomes needed starts from silence, not from an old phrase**
-/// (`docs/code-review-notes.md` §7). The oscillator is read, goes unread for a second while another
-/// route keeps the frame running, and is read again before this sample publishes it.
+/// (mxm-kit's `docs/code-review-notes.md` §7). The oscillator is read, goes unread for a second
+/// while another route keeps the frame running, and is read again before this sample publishes it.
 #[test]
 fn a_source_that_becomes_needed_starts_from_silence_not_from_an_old_phrase() {
     let reads_oscillator = wired(&[
@@ -304,9 +304,10 @@ fn every_pair_at_extreme_amounts_stays_finite_and_bounded() {
 }
 
 /// **The ladder's feedback loop under a coefficient driven at audio rate stays near its own level**
-/// — `mxm-mono-00`'s phaser lesson (`docs/code-review-notes.md` §7), where coherent coefficient
-/// speed, not size, pumped a loop to infinity from silence. A summing Cutoff or Resonance input can
-/// now toggle the ladder's coefficients between their ends every sample, which one knob never could.
+/// — `mxm-mono-00`'s phaser lesson (mxm-kit's `docs/code-review-notes.md` §7), where coherent
+/// coefficient speed, not size, pumped a loop to infinity from silence. A summing Cutoff or
+/// Resonance input can now toggle the ladder's coefficients between their ends every sample, which
+/// one knob never could.
 ///
 /// So the cutoff alternates between its clamp ends and the resonance between none and full, at every
 /// alternation period from two samples, **with no input at all**, at the rates a validator tries.

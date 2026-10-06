@@ -8,7 +8,7 @@
 //! **not 50% duty, and its duty cycle moves with pitch**: roughly 45% at high
 //! pitches and roughly 71% at the lowest.
 //!
-//! `docs/oscillators/04-analog-character.md` §4.5 is blunt about the priority
+//! mxm-kit's `docs/oscillators/04-analog-character.md` §4.5 is blunt about the priority
 //! here: if you are modelling this machine, that pitch dependence "is a much
 //! larger effect than anything in chapter 2" — that is, larger than the choice of
 //! antialiasing method. It costs one lookup.
@@ -156,7 +156,7 @@ impl Oscillator {
                 // not: a pulse whose duty is not 50% carries DC by definition, and
                 // that is exactly what the pitch-dependent duty produces here. The
                 // DC blocker on the voice's *output* is where it comes off, per
-                // `docs/filters/03-nonlinearity.md` §3.4.
+                // mxm-kit's `docs/filters/03-nonlinearity.md` §3.4.
                 saw(t, dt) - saw(t2, dt) - (2.0 * d - 1.0)
             }
         };

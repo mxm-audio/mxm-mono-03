@@ -132,7 +132,7 @@ Does **not** own parameter definitions, ranges, smoothing or the editor — thos
 No framework types; realtime rules on every per-sample path; denormals flushed in the DSP itself on
 every recursive state; `f32` in the audio path and `f64` for prewarping; every saturator bounded
 exactly and monotonic; a stated `pub const` output bound with the argument that establishes it;
-deterministic seeded randomness. These are the parent's and
+deterministic seeded randomness. These are the monorepo root's and mxm-mono-01's
 [`crates/mxm-mono-01-dsp/AGENTS.md`](https://github.com/mxm-audio/mxm-mono-01/blob/main/crates/mxm-mono-01-dsp/AGENTS.md)'s, not restated here.
 
 # Work Guidance
@@ -180,7 +180,7 @@ Properties the tests must keep asserting, because each regresses silently:
 - a tie slides and an un-tied step does not, and a slid destination retriggers nothing
 
 Through the player: `plugins/mxm-mono-03/host-tests/tests/golden_audio.rs` pins the sound by digest
-(`the_reference_is_sensitive_to_the_envelope_depth`) and `host-tests/tests/behaviour.rs` measures
+on Windows (`the_reference_is_sensitive_to_the_envelope_depth`) and `host-tests/tests/behaviour.rs` measures
 pitch, cutoff, accent and slide on rendered audio.
 
 **Not verified, and must not be claimed:** no hardware was measured; the time constants in
@@ -188,8 +188,8 @@ pitch, cutoff, accent and slide on rendered audio.
 Fidelity is UNVERIFIED until a listening comparison against reference recordings is run
 ([NOTES.md § What is not verified](NOTES.md#what-is-not-verified-and-must-not-be-claimed)).
 
-Linux and macOS are unverified — there is no CI (root *Windows, Linux and macOS*) — and the
-development machine is Windows.
+The development machine is Windows; Linux is checked in WSL before a push, and macOS only by CI on
+a release tag (root *Windows, Linux and macOS*).
 
 # Child DOX Index
 

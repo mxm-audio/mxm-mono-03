@@ -462,7 +462,7 @@ fn parameters_view(
 /// The collection's tokens, with this instrument's identity accent (brief §7).
 ///
 /// The hue itself lives in `mxm_ui::theme` — a colour literal here would be a token that had
-/// escaped the shared crate, which `crates/ui/AGENTS.md` forbids outright.
+/// escaped the shared crate, which mxm-kit's `crates/ui/AGENTS.md` forbids outright.
 fn tokens_for(ui: &Ui) -> Tokens {
     let dark = ui.visuals().dark_mode;
     let base = if dark { mxm_ui::DARK } else { mxm_ui::LIGHT };
@@ -947,8 +947,8 @@ mod tests {
     /// new words for the same parts.
     ///
     /// *Voice* is not one of `mxm-mono-01`'s card names, but it is the collection's word all the
-    /// same — `docs/MXM_CONTROL_MAP.md` has carried a **Voice** page since before either editor
-    /// existed, holding glide, bend range and output. The same parts, under the same name.
+    /// same — mxm-kit's `docs/MXM_CONTROL_MAP.md` has carried a **Voice** page since before either
+    /// editor existed, holding glide, bend range and output. The same parts, under the same name.
     #[test]
     fn card_names_come_from_the_collections_vocabulary() {
         const KNOWN: &[&str] = &[
@@ -1050,10 +1050,10 @@ mod tests {
         }
     }
 
-    /// **The layout lab's entry draws each card as its tree.** `apps/mxm-layout-lab` calls
-    /// `sections::draw` with its own state and a `spare` of zero; the wrapper builds the card's tree
-    /// and shows it, so the card the lab draws is as tall as that tree says, at the floor the paging
-    /// renderer is given.
+    /// **The layout lab's entry draws each card as its tree.** `apps/mxm-layout-lab` (private
+    /// archive) calls `sections::draw` with its own state and a `spare` of zero; the wrapper builds
+    /// the card's tree and shows it, so the card the lab draws is as tall as that tree says, at the
+    /// floor the paging renderer is given.
     #[test]
     fn the_layout_labs_entry_draws_each_card_as_its_tree() {
         let floors = test_floors();

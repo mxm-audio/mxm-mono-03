@@ -41,9 +41,9 @@ pub const TITLES: [&str; 3] = ["Voice", "Filter", "Advanced"];
 
 /// The oscillator's two waveforms: a switch, not a blend — the hardware offers one at a time.
 ///
-/// **Drawn, not spelled.** `crates/ui/AGENTS.md` names this exact case: a square wave is the same
-/// picture in an LFO, an oscillator and here, and the vocabulary is shared so every instrument says
-/// it the same way. The words survive as hover and accessible name.
+/// **Drawn, not spelled.** mxm-kit's `crates/ui/AGENTS.md` names this exact case: a square wave is
+/// the same picture in an LFO, an oscillator and here, and the vocabulary is shared so every
+/// instrument says it the same way. The words survive as hover and accessible name.
 const WAVEFORMS: &[(Wave, &str)] = &[(Wave::RampUp, "Sawtooth"), (Wave::Square, "Square")];
 
 /// The pole set's cells, **labelled by the parameter itself** — each its option's own text, as the
@@ -356,8 +356,8 @@ pub fn paint(ui: &mut Ui, tokens: &Tokens, leaf: &Leaf, rect: Rect, live: &mut L
     }
 }
 
-/// Draws one section's body: its tree, shown in `ui`. The layout lab (`apps/mxm-layout-lab`) draws
-/// these real cards through this.
+/// Draws one section's body: its tree, shown in `ui`. The layout lab (`apps/mxm-layout-lab`, in the
+/// private archive since the split) draws these real cards through this.
 ///
 /// `spare` is not spent: a card is as tall as its tree says, and a row of cards is levelled by the
 /// paging renderer, which stretches the shorter card's frame. It stays in the signature so the lab's
@@ -433,8 +433,8 @@ fn routes(
 /// The arithmetic mirrors `Voice::process`. It is duplicated rather than shared because the DSP
 /// crate takes plain values and returns samples — exposing a "where would the cutoff be" accessor
 /// to satisfy a display is the kind of outward-facing hole
-/// `crates/mxm-mono-01-dsp/AGENTS.md` warns about. Being a **declared approximation** is what makes
-/// that acceptable, and brief §8 declares it.
+/// mxm-mono-01's `crates/mxm-mono-01-dsp/AGENTS.md` warns about. Being a **declared
+/// approximation** is what makes that acceptable, and brief §8 declares it.
 fn reach(params: &MxmMono03Params, sample_rate: f32) -> (f32, f32, f32) {
     use mxm_mono_03_dsp::voice::{CUTOFF_HIGH_HZ, CUTOFF_LOW_HZ};
 

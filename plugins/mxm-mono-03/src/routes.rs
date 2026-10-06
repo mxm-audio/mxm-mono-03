@@ -126,10 +126,10 @@ fn amount(target: usize, source: usize) -> FloatParam {
 /// What a route reads: **what its pair delivers at this amount with its source at its peak, in the
 /// target's own unit** — octaves of cutoff, a percentage of the resonance control, a percentage of
 /// the amplifier's level — and per octave of keyboard for a Key route
-/// (`docs/code-review-notes.md` §7, *what a route's amount reads*). So the machine's own routes read
-/// what they deliver at full: +4.60 oct of envelope above the circuit's floor, +6.40 oct of accent
-/// sweep, and +100 % of the accent's level; a route the TB-303 never had reads the collection's
-/// standard reach, +4.00 oct or +100 %.
+/// (mxm-kit's `docs/code-review-notes.md` §7, *what a route's amount reads*). So the machine's own
+/// routes read what they deliver at full: +4.60 oct of envelope above the circuit's floor, +6.40
+/// oct of accent sweep, and +100 % of the accent's level; a route the TB-303 never had reads the
+/// collection's standard reach, +4.00 oct or +100 %.
 fn reach(target: usize, source: usize) -> Reach {
     let unit = match target {
         target::CUTOFF => reading::OCTAVES,
@@ -231,7 +231,7 @@ impl TargetRoutes {
     /// pair was absent nothing called `next()`, but the parameter stayed editable: a host automating
     /// it, or a preset load, moves the *target* and leaves the smoother wherever the last live sample
     /// left it. Resuming from there ramps the route in from a stale number over a span the host's
-    /// buffers decide (`docs/code-review-notes.md` §7).
+    /// buffers decide (mxm-kit's `docs/code-review-notes.md` §7).
     pub fn arm(&self, newly_present: &[bool; SOURCES]) {
         for (source, &now) in newly_present.iter().enumerate() {
             if now {

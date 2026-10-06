@@ -15,9 +15,9 @@ rules, the editor contract — live in the parent and are not restated here. Thi
 
 # Ownership
 
-`BASELINE-M0.md`, `Cargo.toml`, `LICENSE`, `README.md`, `control-map.json`, `presets/`, and `src/` —
+`BASELINE-M0.md`, `Cargo.toml`, `README.md`, `control-map.json`, `presets/`, and `src/` —
 `lib.rs`, `params.rs`, `routes.rs`, `preset.rs`, `telemetry.rs`, and `editor.rs` with its
-`editor/{binding, sections, visuals}.rs`.
+`editor/{binding, sections, visuals}.rs`. Its licence is the repository's root `LICENSE`.
 
 `BASELINE-M0.md` is the routing conversion's reference, produced by `lib.rs`'s `#[ignore]`d
 `baseline` module through `render_block_for_test`. That is a measurement seam, not a second
@@ -141,18 +141,18 @@ The brief is [`docs/briefs/mxm-mono-03.md`](../../docs/briefs/mxm-mono-03.md); t
   `every_dynamic_page_fits_and_every_card_is_reachable`,
   `every_card_passes_the_tree_checks_in_every_state`.
 - **No caption on any card** (the owner, 2026-09-27; design system §7.6).
-- `sections::draw` keeps its signature for `apps/mxm-layout-lab`.
+- `sections::draw` keeps its signature for `apps/mxm-layout-lab` (in the private archive).
 - **Volume is in the app bar, not the Voice card** (owner, 2026-09-18), under `VOLUME_CARD`;
   `the_volume_is_drawn_in_the_app_bar_and_on_no_card`.
 - `src/telemetry.rs` is the **only** DSP → editor channel: `Arc`-shared, atomics only, written once
   per block. The editor sets this crate's MSRV at **1.95**; the DSP crate stays at 1.87.
-- `editor`, `params`, `routes` and `telemetry` are **permanently `pub`** for the layout lab; nothing
+- `editor`, `params`, `routes` and `telemetry` are **permanently `pub`** for the layout lab (private archive); nothing
   else changes for it
   ([NOTES.md § Public modules](NOTES.md#editor-params-routes-and-telemetry-are-public)).
 
 ## Presets
 
-- `preset.rs` is this instrument's `Instrument` impl on `crates/mxm-preset`; `editor/binding.rs`
+- `preset.rs` is this instrument's `Instrument` impl on mxm-kit's `mxm-preset`; `editor/binding.rs`
   re-exports `mxm_preset::binding`
   ([NOTES.md § preset.rs](NOTES.md#presetrs-is-this-instruments-instrument-impl-and-its-factory-set)).
 - The factory files are generated from `FACTORY_DESIGN` (`write_the_factory_presets`, `#[ignore]`d);
@@ -185,7 +185,7 @@ coverage check runs in two frames — the init patch and every route present
 (`the_keyboard_cursor_reaches_and_operates_every_route_revealed`).
 
 Through the player, against the release bundle: `plugins/mxm-mono-03/host-tests/tests/behaviour.rs`
-and `plugins/mxm-mono-03/host-tests/tests/golden_audio.rs`. The baseline: `cargo test -p mxm-mono-03 --release --lib baseline --
+and `plugins/mxm-mono-03/host-tests/tests/golden_audio.rs` (its digest pinned on Windows only). The baseline: `cargo test -p mxm-mono-03 --release --lib baseline --
 --ignored --nocapture --test-threads=1`, whose timings count only on a quiet machine.
 
 **Not run:** a real DAW, and any listening comparison against hardware. Fidelity is UNVERIFIED — see

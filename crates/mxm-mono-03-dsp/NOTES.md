@@ -2,6 +2,9 @@
 
 The detail behind this folder's AGENTS.md: history, measurements, rationale and worked examples. AGENTS.md is the contract; this file is the reference it links to.
 
+*Since the split (2026-10-06):* the `plans/` cited below are the design history, in the private
+archive.
+
 ## The accent circuit is the instrument, and it has memory
 
 `research:filters/machines/tb303-diode-ladder.md` §4 measures the diode ladder and concludes **the
@@ -69,7 +72,8 @@ passes `SLIDE_TIME_S`.
 
 The lagged note number is `target_note + glide_offset` — the slide carried as its **remaining
 distance**, which lands exactly, where the note-number form stalled a cent flat at the circuit's
-60 ms (`a_slide_lands_exactly_on_its_note`; `crates/mxm-mono-01-dsp/AGENTS.md`, *Numeric
+60 ms (`a_slide_lands_exactly_on_its_note`; mxm-mono-01's
+[`crates/mxm-mono-01-dsp/AGENTS.md`](https://github.com/mxm-audio/mxm-mono-01/blob/main/crates/mxm-mono-01-dsp/AGENTS.md), *Numeric
 contracts*). `Params` carries two offsets on top of it:
 `tune_semitones` (the tuning control plus the channel bend) and `expression_semitones` (the host's
 per-note pitch expression). **Both are added after the lag**, so neither is smeared by the slide's
@@ -180,7 +184,7 @@ reading, is `SOURCE_PEAK` — `mxm-mono-00`'s rule — and nothing evaluates wit
 ## The ladder's loop is bounded by its saturator, and that was measured rather than assumed
 
 `mxm-mono-00`'s phaser ran away to infinity when a summing input drove its coefficient coherently
-near Nyquist (`docs/code-review-notes.md` §7), and this instrument's Oscillator can now drive the
+near Nyquist (mxm-kit's `docs/code-review-notes.md` §7), and this instrument's Oscillator can now drive the
 diode ladder's cutoff and resonance the same way. **It does not pump**:
 `the_ladder_driven_at_audio_rate_from_silence_does_not_pump_itself` alternates the cutoff between
 its clamp ends and the resonance between none and full, at every period from two samples, with no
@@ -206,7 +210,7 @@ normal` shows that crate and nothing else.
 
 `[dev-dependencies]` holds **`mxm-measure`**, the collection's measurement rulers — zero dependencies
 at this same floor, reaching only tests and `examples/`, never a shipped `.clap`.
-[`../mxm-measure/AGENTS.md`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-measure/AGENTS.md)'s
+mxm-kit's [`crates/mxm-measure/AGENTS.md`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-measure/AGENTS.md)'s
 verification section checks that rather than asserting it.
 
 It also holds **`mxm-audio-file`**, which writes the listening demo, and **`mxm-audio-file-decode`**,

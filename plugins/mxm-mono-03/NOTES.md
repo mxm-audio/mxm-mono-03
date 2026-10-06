@@ -2,6 +2,9 @@
 
 The detail behind this folder's AGENTS.md: history, measurements, rationale and worked examples. AGENTS.md is the contract; this file is the reference it links to.
 
+*Since the split (2026-10-06):* the `plans/` cited below are the design history, in the private
+archive.
+
 ## The routing baseline
 
 **`BASELINE-M0.md` is the routing conversion's reference**, captured before any of it
@@ -114,6 +117,9 @@ Note the constraint that makes the separate plugin harder than it sounds: `apps/
 any plugin declaring an audio input, so an effect cannot run in this project's own host until the
 player learns to host one. That is host work, recorded in the player's README, and it is a blocker
 on the effects collection only — a built-in effect is inside an instrument that has no audio input.
+*As of 2026-10-06:* MXM Player is its own repository, mxm-player, and it now hosts effects in one
+serial chain after the source (its `apps/mxm-player/AGENTS.md`, *Scope and the effect chain*); it
+still takes no audio input of its own.
 
 **Do not confuse this with drive.** The drive into the filter *is* part of the voice — the ladder's
 droop means it must be driven hard to be heard at all — and it is not a user control because the
@@ -251,7 +257,7 @@ wider and sets it (`the_app_bar_holds_in_the_minimum_window`). The brief is
 `every_dynamic_page_fits_and_every_card_is_reachable` checks all three cards in both themes at
 opening, quarter-4K content and minimum sizes at 1× and 2× with the simulated physical budget fixed.
 
-**Every card is a `mxm_ui::tree`** (`crates/ui/AGENTS.md`, *A card body as data*).
+**Every card is a `mxm_ui::tree`** (mxm-kit's [`crates/ui/AGENTS.md`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/ui/AGENTS.md), *A card body as data*).
 `sections::card` describes each paging item's body once and `sections::paint` draws each leaf
 through the same bindings; the paged view is `paging::editor::show`. The gaps are the hand
 layout's: the body's `SPACE_3` rhythm, with the `add_space` it put on top as pads.
@@ -273,7 +279,7 @@ layout's: the body's `SPACE_3` rhythm, with the `add_space` it put on top as pad
   sweep's hover text says consecutive accents build on each other, and Decay's tooltip that it is
   the only envelope and always moves the filter a little. The filter model's cells are the
   parameter's own option text, and every control draws through the shared named controls.
-- `sections::draw` stays for `apps/mxm-layout-lab`, with its signature: it builds the section's tree
+- `sections::draw` stays for `apps/mxm-layout-lab` (in the private archive since the split), with its signature: it builds the section's tree
   and shows it. Its `spare` is unused: a row of cards is levelled by the paging renderer.
 - `every_card_passes_the_tree_checks_in_every_state` runs `mxm_plugin_test::tree_checks` over every
   card at Init, with every route revealed at full negative depth, and with a run of accents climbing
@@ -292,7 +298,7 @@ stays at 1.87.
 
 ## `preset.rs` is this instrument's `Instrument` impl and its factory set
 
-The system is `crates/mxm-preset` (since 2026-09-04): this file was the second copy, and the copies
+The system is mxm-kit's `crates/mxm-preset` (since 2026-09-04): this file was the second copy, and the copies
 were the evidence the extraction was made from. `editor/binding.rs` re-exports
 `mxm_preset::binding`, the collection's one binding, since 2026-09-24. What is local: the **fifty
 factory sounds** in `presets/`, each with its category, generated from `FACTORY_DESIGN` in

@@ -16,7 +16,7 @@
 //! a single diode.
 //!
 //! No diode equations, and no inter-stage coupling constant to tune. An earlier
-//! sketch in `docs/filters/02-topologies.md` §2.5 used a hand-tuned coupling
+//! sketch in mxm-kit's `docs/filters/02-topologies.md` §2.5 used a hand-tuned coupling
 //! constant and was labelled behavioural; the pole set has no free parameters and
 //! reproduces two published numbers, so it supersedes it.
 //!
@@ -257,7 +257,7 @@ impl DiodeLadder {
 
     /// Map a normalised resonance `0..=1` onto **this configuration's own** `k`.
     ///
-    /// `docs/filters/09-voicing.md` §9.1: a resonance scale shared across filter
+    /// mxm-kit's `docs/filters/09-voicing.md` §9.1: a resonance scale shared across filter
     /// families puts the singing point somewhere different on each one, so the knob
     /// is normalised against the family's own threshold rather than against a
     /// constant.
