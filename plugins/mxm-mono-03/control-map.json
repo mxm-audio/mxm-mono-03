@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "_comment": [
+    "Which of mxm-mono-03's parameters fill the collection's control roles.",
+    "Roles come from docs/MXM_CONTROL_MAP.md, which is normative; parameters are named by",
+    "their permanent string id, never by display name.",
+    "",
+    "ACCENT IS DELIBERATELY ABSENT, and it is the one control a player would want here.",
+    "The collection standard is compiled into the player, and an instrument map naming a role",
+    "the player's standard does not declare is refused WHOLE - not just that entry. So claiming",
+    "an accent role would cost this instrument every mapping below on any player built before",
+    "the role existed. Accent stays reachable from the panel, from host automation, and from a",
+    "host's per-step modulation, which is how a sequencer reaches it anyway.",
+    "",
+    "The roles now exist in the standard. This file claims them once an unknown role is inert",
+    "rather than fatal - see docs/MXM_CONTROL_MAP.md section 9.",
+    "",
+    "filter.env_amount names the (Cutoff <- Filter envelope) route's amount, which the init patch",
+    "wires at zero above the circuit's Env Mod floor, so the knob is live on a fresh instance."
+  ],
+  "instruments": [
+    {
+      "clap_id": "dk.mxm.mxm-mono-03",
+      "name": "mxm-mono-03",
+      "params": {
+        "osc1.tune": "tune",
+        "osc1.wave": "waveform",
+
+        "filter.cutoff": "cutoff",
+        "filter.resonance": "resonance",
+        "filter.env_amount": "mod_cutoff_env",
+
+        "filter_env.decay": "decay",
+
+        "voice.bend_range": "bendrange",
+        "voice.output": "volume"
+      }
+    }
+  ]
+}

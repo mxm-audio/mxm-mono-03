@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "plugin": "dk.mxm.mxm-mono-03",
+  "name": "Muted pluck",
+  "category": "pluck",
+  "_comment": "`v` is the value and is authoritative. `text` is this plugin's own formatting of it, kept so the file can be read, and is never loaded.",
+  "params": {
+    "accent": {
+      "v": 0.0,
+      "text": "0 %"
+    },
+    "accentdecay": {
+      "v": 0.42836314,
+      "text": "200 ms"
+    },
+    "accentnote": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "accentsweep": {
+      "v": 0.4698715,
+      "text": "1.00 x"
+    },
+    "ampattack": {
+      "v": 0.15367976,
+      "text": "3 ms"
+    },
+    "ampdecay": {
+      "v": 0.2,
+      "text": "135 ms"
+    },
+    "bendrange": {
+      "v": 0.083333336,
+      "text": "2 st"
+    },
+    "cutoff": {
+      "v": 0.2,
+      "text": "20 %"
+    },
+    "decay": {
+      "v": 0.1,
+      "text": "10 %"
+    },
+    "drive": {
+      "v": 0.3,
+      "text": "2.6 x"
+    },
+    "filterattack": {
+      "v": 0.15367976,
+      "text": "3 ms"
+    },
+    "filtermodel": {
+      "v": 0.0,
+      "text": "Diode (1)"
+    },
+    "mod_amp_accent": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_accentlevel": {
+      "v": 1.0,
+      "text": "+100 %"
+    },
+    "mod_amp_accentlevelon": {
+      "v": 1.0,
+      "text": "On"
+    },
+    "mod_amp_accenton": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_bend": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_bendon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_env": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_envon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_key": {
+      "v": 0.5,
+      "text": "+0 %/oct"
+    },
+    "mod_amp_keyon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_osc": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_oscon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_press": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_presson": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_vel": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_velon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_wheel": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_wheelon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_accent": {
+      "v": 1.0,
+      "text": "+6.40 oct"
+    },
+    "mod_cutoff_accentlevel": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_accentlevelon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_accenton": {
+      "v": 1.0,
+      "text": "On"
+    },
+    "mod_cutoff_bend": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_bendon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_env": {
+      "v": 0.7,
+      "text": "+1.84 oct"
+    },
+    "mod_cutoff_envon": {
+      "v": 1.0,
+      "text": "On"
+    },
+    "mod_cutoff_key": {
+      "v": 0.5,
+      "text": "+0.00 oct/oct"
+    },
+    "mod_cutoff_keyon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_osc": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_oscon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_press": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_presson": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_vel": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_velon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_wheel": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_wheelon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_res_accent": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_res_accentlevel": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_res_accentlevelon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_res_accenton": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_res_bend": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_res_bendon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_res_env": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_res_envon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_res_key": {
+      "v": 0.5,
+      "text": "+0 %/oct"
+    },
+    "mod_res_keyon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_res_osc": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_res_oscon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_res_press": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_res_presson": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_res_vel": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_res_velon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_res_wheel": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_res_wheelon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "resonance": {
+      "v": 0.25,
+      "text": "25 %"
+    },
+    "slide": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "slidetime": {
+      "v": 0.33333334,
+      "text": "60 ms"
+    },
+    "tune": {
+      "v": 0.5,
+      "text": "0.0 cents"
+    },
+    "volume": {
+      "v": 0.87145656,
+      "text": "-6.0 dB"
+    },
+    "waveform": {
+      "v": 0.0,
+      "text": "Sawtooth"
+    }
+  },
+  "state": null
+}
