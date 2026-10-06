@@ -219,13 +219,18 @@ impl MxmMono03 {
     }
 
     fn handle_event(&mut self, event: NoteEvent<()>) {
+        // nice-plug 0.4 types a note's channel and key, each with a wildcard. Every arm reads them
+        // in 0.3's shape, a host's wildcard (-1) as 255, so every note decision, and every recorded
+        // render, is exactly what it was before the upgrade.
         match event {
             NoteEvent::NoteOn {
                 channel,
-                note,
+                key,
                 velocity,
                 ..
             } => {
+                let channel = channel.number().unwrap_or(u8::MAX);
+                let note = key.number().unwrap_or(u8::MAX);
                 // Velocity zero is a note-off by convention. Otherwise velocity reaches the voice as
                 // the Velocity routing source and nothing else (`plan-modulation-routing.md` decision
                 // 1.7): the hardware has no velocity sensitivity and accent is its only dynamic, so
@@ -251,13 +256,14 @@ impl MxmMono03 {
                 }
             }
 
-            NoteEvent::NoteOff { note, .. } => self.note_off(note),
+            NoteEvent::NoteOff { key, .. } => self.note_off(key.number().unwrap_or(u8::MAX)),
 
             // Immediate, no release — **for the note that is sounding**, matched exactly as a
             // note-off is. A slide replaces the sounding note before the old one's events have all
             // arrived, and a stale choke for it reset the voice and cut the note it slid into
             // (audit D9).
-            NoteEvent::Choke { note, .. } => {
+            NoteEvent::Choke { key, .. } => {
+                let note = key.number().unwrap_or(u8::MAX);
                 if self.sounding == Some(note) {
                     self.sounding = None;
                     self.voice.choke();
@@ -270,7 +276,8 @@ impl MxmMono03 {
             // applying it would bend a note the host never asked to bend.
             // A non-finite tuning is dropped, and the note keeps the offset it had: a NaN in the
             // pitch sum would reach the oscillator's phase and never leave.
-            NoteEvent::PolyTuning { note, tuning, .. } => {
+            NoteEvent::PolyTuning { key, tuning, .. } => {
+                let note = key.number().unwrap_or(u8::MAX);
                 if self.sounding == Some(note) && tuning.is_finite() {
                     self.expression_semitones = tuning;
                 }
@@ -707,14 +714,15 @@ mod init_patch {
 #[cfg(test)]
 mod pitch_expression {
     use super::MxmMono03;
+    use nice_plug::midi::{Channel, Key, VoiceID};
     use nice_plug::prelude::*;
 
     fn note_on(plugin: &mut MxmMono03, note: u8) {
         plugin.handle_event(NoteEvent::NoteOn {
             timing: 0,
-            voice_id: None,
-            channel: 0,
-            note,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Number(0),
+            key: Key::Number(note),
             velocity: 0.8,
         });
     }
@@ -722,9 +730,9 @@ mod pitch_expression {
     fn tune(plugin: &mut MxmMono03, note: u8, semitones: f32) {
         plugin.handle_event(NoteEvent::PolyTuning {
             timing: 0,
-            voice_id: None,
-            channel: 0,
-            note,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Number(0),
+            key: Key::Number(note),
             tuning: semitones,
         });
     }
@@ -770,9 +778,9 @@ mod pitch_expression {
         tune(&mut plugin, 52, 2.0);
         plugin.handle_event(NoteEvent::NoteOff {
             timing: 0,
-            voice_id: None,
-            channel: 0,
-            note: 52,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Number(0),
+            key: Key::Number(52),
             velocity: 0.0,
         });
         assert_eq!(
@@ -815,6 +823,7 @@ mod pitch_expression {
 #[cfg(test)]
 mod note_tracking {
     use super::*;
+    use nice_plug::midi::{Channel, Key, VoiceID};
     use nice_plug::params::InternalParamMut;
 
     fn plugin() -> MxmMono03 {
@@ -829,9 +838,9 @@ mod note_tracking {
     fn note_on(plugin: &mut MxmMono03, note: u8) {
         plugin.handle_event(NoteEvent::NoteOn {
             timing: 0,
-            voice_id: None,
-            channel: 0,
-            note,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Number(0),
+            key: Key::Number(note),
             velocity: 0.8,
         });
     }
@@ -839,9 +848,9 @@ mod note_tracking {
     fn choke(plugin: &mut MxmMono03, note: u8) {
         plugin.handle_event(NoteEvent::Choke {
             timing: 0,
-            voice_id: None,
-            channel: 0,
-            note,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Number(0),
+            key: Key::Number(note),
         });
     }
 
@@ -952,6 +961,7 @@ mod developer_channel_tests {
 mod routing_path {
     use super::*;
     use mxm_mono_03_dsp::routing::source;
+    use nice_plug::midi::{Channel, Key, VoiceID};
     use nice_plug::params::InternalParamMut;
 
     const FS: f32 = 48_000.0;
@@ -970,17 +980,17 @@ mod routing_path {
         plugin.handle_event(if on {
             NoteEvent::NoteOn {
                 timing: 0,
-                voice_id: None,
-                channel: 0,
-                note,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(0),
+                key: Key::Number(note),
                 velocity,
             }
         } else {
             NoteEvent::NoteOff {
                 timing: 0,
-                voice_id: None,
-                channel: 0,
-                note,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(0),
+                key: Key::Number(note),
                 velocity: 0.0,
             }
         });
@@ -1098,6 +1108,7 @@ mod routing_path {
 #[cfg(test)]
 mod baseline {
     use super::*;
+    use nice_plug::midi::{Channel, Key, VoiceID};
     use nice_plug::params::InternalParamMut;
     use std::time::Instant;
 
@@ -1125,17 +1136,17 @@ mod baseline {
         plugin.handle_event(if on {
             NoteEvent::NoteOn {
                 timing: 0,
-                voice_id: None,
-                channel: 0,
-                note,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(0),
+                key: Key::Number(note),
                 velocity: 0.8,
             }
         } else {
             NoteEvent::NoteOff {
                 timing: 0,
-                voice_id: None,
-                channel: 0,
-                note,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(0),
+                key: Key::Number(note),
                 velocity: 0.0,
             }
         });
@@ -1359,6 +1370,7 @@ mod baseline {
 mod sample_rate_floor {
     use super::*;
     use mxm_mono_03_dsp::MIN_SAMPLE_RATE;
+    use nice_plug::midi::{Channel, Key, VoiceID};
 
     struct Activation;
 
@@ -1407,9 +1419,9 @@ mod sample_rate_floor {
             assert_eq!(plugin.sample_rate, MIN_SAMPLE_RATE);
             plugin.handle_event(NoteEvent::NoteOn {
                 timing: 0,
-                voice_id: None,
-                channel: 0,
-                note: 48,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(0),
+                key: Key::Number(48),
                 velocity: 0.8,
             });
             let out = render(&mut plugin, 4_000);
