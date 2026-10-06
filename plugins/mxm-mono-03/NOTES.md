@@ -305,7 +305,7 @@ Factory presets never set `accentnote` or `slide`: those are the sequencer's per
 ## `editor`, `params`, `routes` and `telemetry` are public
 
 They are `pub`, with the `Section` enum, its `SECTIONS`, `title()` and the card grouping the flow
-reads, so [`apps/mxm-layout-lab`](https://github.com/mxm-audio/newdawn-workspace/blob/main/apps/mxm-layout-lab/AGENTS.md)
+reads, so `apps/mxm-layout-lab` (`apps/mxm-layout-lab/AGENTS.md` in the private archive)
 can draw **these real cards** on its bench instead of copying the section code, which would then
 drift.
 
