@@ -188,8 +188,8 @@ pitch, cutoff, accent and slide on rendered audio.
 Fidelity is UNVERIFIED until a listening comparison against reference recordings is run
 ([NOTES.md § What is not verified](NOTES.md#what-is-not-verified-and-must-not-be-claimed)).
 
-The development machine is Windows; Linux is checked in WSL before a push, and macOS only by CI on
-a release tag (root *Windows, Linux and macOS*).
+The development machine is Windows; Linux and macOS are checked later, together, and by CI on
+a `v*` tag (root *Windows, Linux and macOS*).
 
 # Child DOX Index
 
