@@ -238,7 +238,10 @@ impl MxmMono03 {
                 if velocity <= 0.0 {
                     self.note_off(note);
                 } else {
-                    self.active_channel = channel;
+                    // A host's wildcard channel (CLAP's -1) arrives as 255 (`legacy_note`), and the bend,
+                    // wheel and pressure tables have 16 entries: wrap it, as the pitch-bend path does, so a
+                    // wildcard reads channel 15's instead of panicking. Channels 0 to 15 are unchanged.
+                    self.active_channel = (usize::from(channel) % NUM_CHANNELS) as u8;
                     self.sounding = Some(note);
                     // A new note carries no expression until the host sends one — including the
                     // note that begins a slide, which is a new note with the gate held open.
@@ -1469,5 +1472,27 @@ mod speaks_to_the_player {
         mxm_plugin_test::hover_text::host_description_speaks_to_the_player(env!(
             "CARGO_MANIFEST_DIR"
         ));
+    }
+}
+
+/// A NoteOn on a host's wildcard channel indexed the 16-entry per-channel tables with 255 and
+/// panicked (found while porting to nice-plug 0.4.2, 2026-10-06); it now plays on channel 15's.
+#[cfg(test)]
+mod wildcard_channel {
+    use super::*;
+    use nice_plug::midi::{Channel, Key, VoiceID};
+
+    #[test]
+    fn a_note_on_a_wildcard_channel_plays_instead_of_panicking() {
+        let mut plugin = MxmMono03::default();
+        plugin.handle_event(NoteEvent::NoteOn {
+            timing: 0,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Wildcard,
+            key: Key::Number(60),
+            velocity: 0.8,
+        });
+        let _ = plugin.next_patch();
+        assert_eq!(usize::from(plugin.active_channel), NUM_CHANNELS - 1);
     }
 }
