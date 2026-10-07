@@ -189,7 +189,7 @@ Fidelity is UNVERIFIED until a listening comparison against reference recordings
 ([NOTES.md § What is not verified](NOTES.md#what-is-not-verified-and-must-not-be-claimed)).
 
 The development machine is Windows; Linux and macOS are checked later, together, and by CI on
-a `v*` tag (root *Windows, Linux and macOS*).
+a run started by hand (root *Windows, Linux and macOS*).
 
 # Child DOX Index
 
