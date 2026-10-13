@@ -243,7 +243,7 @@ pub fn panel(
     // `inert` both ask whether another surface owns this frame's keyboard.
     let busy = presets.holds_the_keyboard() || text_entry.values().any(Option::is_some);
     mxm_ui::paging::editor::hold(ui.ctx(), busy);
-    mxm_ui::paging::editor::developer_request(ui.ctx(), view, telemetry.take_view_request());
+    mxm_ui::paging::editor::developer_request(ui.ctx(), view, telemetry.dev.take_view());
 
     // **The keyboard cursor moves before anything is drawn**, so a navigation arrow is consumed
     // here rather than also walking egui's own focus ring. It reads the registry and the exact
@@ -258,29 +258,29 @@ pub fn panel(
         // bar card the cursor reaches first.
         mxm_ui::navigation::paged_with_bar(ui.ctx(), nav, busy, &[VOLUME_CARD]);
     }
-    if let Some(open) = telemetry.take_browser_request() {
+    if let Some(open) = telemetry.dev.take_browser() {
         presets.set_browser_open(open);
     }
     // A theme, by index. Applied and not stored: this channel is how a screenshot run and a test
     // reach a state, and neither should overwrite the choice made in the control.
-    if let Some(index) = telemetry.take_theme_request()
+    if let Some(index) = telemetry.dev.take_theme()
         && let Some(preference) = mxm_ui::theme::from_index(index)
     {
         ui.ctx().set_theme(preference);
     }
-    let _ = telemetry.take_disclosure_request();
+    let _ = telemetry.dev.take_disclosure();
 
     // §3.1: slots 2-4 are the patch — the preset browser — and the right edge carries the output
     // state, the output control and the scale control.
-    let peak = telemetry.take_peak();
-    let clipped = telemetry.clipped();
+    let peak = telemetry.meter.take();
+    let clipped = telemetry.meter.clipped();
     mxm_ui::AppBar::new("mxm-mono-03").show_with(
         ui,
         tokens,
         |ui| mxm_preset::ui::preset_row(ui, tokens, params, setter, presets),
         |ui| {
             if mxm_ui::shell::level_meter(ui, tokens, peak, clipped) {
-                telemetry.clear_clip();
+                telemetry.meter.clear_clip();
             }
             // Design system §3.1 slot 6: the instrument's output control sits beside its meter,
             // not in the Voice card among the controls that shape a note.
