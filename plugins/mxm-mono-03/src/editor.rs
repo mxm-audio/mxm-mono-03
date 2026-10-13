@@ -740,28 +740,7 @@ mod tests {
     use nice_plug::params::internals::ParamPtr;
     use nice_plug::prelude::{PluginApi, PluginState};
 
-    /// The editor reports edits through a `ParamSetter`; laying it out makes none, so every method
-    /// here is unreachable and exists only to satisfy the trait.
-    struct NoHost;
-
-    impl nice_plug::context::gui::GuiContextInner for NoHost {
-        // A test double has no host to ask for a restart (nice-plug 0.4).
-        fn request_restart(&self) {}
-        fn plugin_api(&self) -> PluginApi {
-            PluginApi::Clap
-        }
-        unsafe fn raw_begin_set_parameter(&self, _param: ParamPtr) {}
-        unsafe fn raw_set_parameter_normalized(&self, _param: ParamPtr, _normalized: f32) {}
-        unsafe fn raw_end_set_parameter(&self, _param: ParamPtr) {}
-        fn get_state(&self) -> PluginState {
-            PluginState {
-                version: String::new(),
-                params: Default::default(),
-                fields: Default::default(),
-            }
-        }
-        fn set_state(&self, _state: PluginState) {}
-    }
+    use mxm_plugin_test::NoHost;
 
     /// Lays the whole editor out and returns the context, so a test can read what it recorded.
     fn lay_out(view: usize, width: f32, height: f32) -> egui::Context {

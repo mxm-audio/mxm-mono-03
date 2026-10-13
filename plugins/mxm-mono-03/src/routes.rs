@@ -318,7 +318,7 @@ impl Routes {
 
     /// Every routing parameter, named by its permanent id, for the preset layer. **Presets carry
     /// routing**, presences included, or a sound would load with somebody else's routes still in it.
-    pub fn parameters(&self) -> Vec<(&'static str, &dyn mxm_preset::ErasedParam)> {
+    pub fn parameters(&self) -> Vec<(&'static str, &dyn mxm_params::ErasedParam)> {
         let mut out = Vec::with_capacity(TARGETS * SOURCES * 2);
         for (index, (group, ids)) in self.each().into_iter().zip(ROUTE_IDS).enumerate() {
             for (route, (amount, presence)) in group.routes(index).into_iter().zip(ids) {
@@ -403,7 +403,7 @@ mod tests {
     /// the first knob they turn, and no audio assertion can see it.
     #[test]
     fn a_route_reads_what_its_pair_delivers_and_reads_back() {
-        use mxm_preset::ErasedParam;
+        use mxm_params::ErasedParam;
         let r = Routes::new();
         let cases: [(&FloatParam, f32, &str); 12] = [
             // The machine's own, at the circuit's reach.
@@ -468,7 +468,7 @@ mod tests {
     /// rejects.
     #[test]
     fn every_reading_survives_the_hosts_round_trip_a_rounded_zero_included() {
-        use mxm_preset::ErasedParam;
+        use mxm_params::ErasedParam;
         let r = Routes::new();
         for group in r.each() {
             for s in 0..SOURCES {

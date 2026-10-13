@@ -47,7 +47,7 @@ Treat all of them as public interface.
 - **A route's amount reads what its pair delivers** (`SOURCE_PEAK`), through the collection's one
   route parameter `mxm_modulation_params::reading::amount_param_at`:
   `a_route_reads_what_its_pair_delivers_and_reads_back`, `every_route_parameter_says_what_the_dsp_does`.
-- **A reading never prints a negative zero**: numbers go through `mxm_modulation_params::signed`
+- **A reading never prints a negative zero**: numbers go through `mxm_params::text::signed`
   (`every_reading_survives_the_hosts_round_trip_a_rounded_zero_included`).
 - **`envmod` is retired and never reused** (`no_retired_id_reappears`); no `filter_state` is built
   (owner, 2026-09-15), so a saved state loses what `envmod` held.
@@ -153,7 +153,7 @@ The brief is [`docs/briefs/mxm-mono-03.md`](../../docs/briefs/mxm-mono-03.md); t
 ## Presets
 
 - `preset.rs` is this instrument's `Instrument` impl on mxm-kit's `mxm-preset`; `editor/binding.rs`
-  re-exports `mxm_preset::binding`
+  re-exports `mxm_params::binding`
   ([NOTES.md § preset.rs](NOTES.md#presetrs-is-this-instruments-instrument-impl-and-its-factory-set)).
 - The factory files are generated from `FACTORY_DESIGN` (`write_the_factory_presets`, `#[ignore]`d);
   `the_factory_files_match_the_design_they_were_generated_from` catches a stale file. Init has no file.

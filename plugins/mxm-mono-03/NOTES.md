@@ -32,7 +32,7 @@ typed reading lands back on its amount. Every amount is the collection's one rou
 `mxm_modulation_params::reading::amount_param_at`, because the accent circuit's two routes start at
 full — and `every_route_parameter_says_what_the_dsp_does` holds every pair's travel and reading to
 `mxm_mono_03_dsp::conformance` (`mxm_plugin_test::routing_checks`). **A reading never prints a
-negative zero**: its number goes through `mxm_modulation_params::signed`, because `-0 %/oct` parses
+negative zero**: its number goes through `mxm_params::text::signed`, because `-0 %/oct` parses
 to zero and prints `+0 %/oct`, text that is not idempotent through the host's conversion —
 `clap-validator`'s `param-conversions` found it on this conversion's first bundle
 (`every_reading_survives_the_hosts_round_trip_a_rounded_zero_included`).
@@ -300,7 +300,7 @@ stays at 1.87.
 
 The system is mxm-kit's `crates/mxm-preset` (since 2026-09-04): this file was the second copy, and the copies
 were the evidence the extraction was made from. `editor/binding.rs` re-exports
-`mxm_preset::binding`, the collection's one binding, since 2026-09-24. What is local: the **fifty
+`mxm_params::binding`, the collection's one binding, since 2026-09-24. What is local: the **fifty
 factory sounds** in `presets/`, each with its category, generated from `FACTORY_DESIGN` in
 `preset.rs`'s test module (`write_the_factory_presets`, `#[ignore]`d;
 `the_factory_files_match_the_design_they_were_generated_from` catches a stale file). Init has no

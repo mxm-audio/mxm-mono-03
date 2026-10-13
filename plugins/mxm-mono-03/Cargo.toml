@@ -22,6 +22,7 @@ nice-plug.workspace = true
 nice-plug-egui.workspace = true
 mxm-ui.workspace = true
 mxm-preset.workspace = true
+mxm-params.workspace = true
 egui.workspace = true
 mxm-mono-03-dsp.workspace = true
 mxm-modulation-params.workspace = true
