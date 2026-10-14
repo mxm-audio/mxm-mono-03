@@ -158,7 +158,7 @@ and its headroom stays in the test that argues for it.
 ```bash
 cargo test -p mxm-mono-03-dsp
 cargo +1.87.0 test -p mxm-mono-03-dsp       # the MSRV this crate claims
-cargo tree -p mxm-mono-03-dsp -e normal      # mxm-modulation and mxm-rng, nothing else
+cargo tree -p mxm-mono-03-dsp -e normal      # mxm-modulation, mxm-rng and mxm-dsp, nothing else
 cargo clippy -p mxm-mono-03-dsp --all-targets
 cargo run -p mxm-mono-03-dsp --release --example mono_03_render_demo   # the mechanisms, one at a time
 cargo run -p mxm-mono-03-dsp --release --example acid_demo     # what they add up to, filter played
