@@ -39,7 +39,6 @@ use mxm_ui::space::SPACE_5;
 use mxm_ui::theme::Tokens;
 use nice_plug::context::gui::GuiContext;
 use nice_plug::prelude::*;
-use nice_plug_egui::{EguiEditorState, NiceEguiApp, create_egui_editor};
 
 use crate::params::MxmMono03Params;
 use crate::telemetry::Telemetry;
@@ -101,41 +100,21 @@ const VOLUME_CARD: u64 = 64;
 
 /// Builds the editor. Called from `Plugin::editor`.
 pub fn create(params: Arc<MxmMono03Params>, telemetry: Arc<Telemetry>) -> Option<MxmMono03Editor> {
-    let state = EguiEditorState::from_size(
-        nice_plug::editor::dpi::LogicalSize::new(REFERENCE.0, REFERENCE.1),
-        1.0,
-    );
-
-    create_egui_editor(
-        state,
-        nice_plug_egui::RepaintNotifier::new(),
-        nice_plug_egui::EguiNiceSettings {
-            title: "mxm-mono-03".to_owned(),
-            // **Resizable, because the layout reflows** (§3.4, §4.3). The floor is one card wide
-            // plus the panel's gutters: below it a card would be drawn narrower than its own
-            // controls, which no arrangement can fix. Zoom is still chosen from the app bar, never
-            // derived from the window — deriving it feeds back and the window jitters.
-            resize_hint: ResizeHint {
-                size_constraints: nice_plug::editor::SizeConstraints::min_logical_size(
-                    nice_plug::editor::dpi::LogicalSize::new(MINIMUM.0 as f32, MINIMUM.1 as f32),
-                ),
-                ..ResizeHint::RESIZABLE
-            },
-            ..Default::default()
-        },
+    mxm_editor::create(
+        "mxm-mono-03",
+        REFERENCE,
+        MINIMUM,
         MxmMono03App::new(params, telemetry),
     )
 }
 
 /// The editor type the plugin exposes.
-pub type MxmMono03Editor = nice_plug_egui::EguiEditor<MxmMono03App>;
+pub type MxmMono03Editor = mxm_editor::Editor<MxmMono03App>;
 
 /// The editor's own state: what the plugin does not own and the host does not need.
 pub struct MxmMono03App {
     params: Arc<MxmMono03Params>,
     telemetry: Arc<Telemetry>,
-    /// Set in `build`, because that is where nice-plug hands it over.
-    gui_context: Option<GuiContext>,
     /// Which of [`VIEWS`] is showing. `0` is `Synth`, so the brief's default costs nothing.
     view: usize,
     /// Open text-entry buffers, keyed by parameter id. §7.1 requires direct text entry on every
@@ -158,7 +137,6 @@ impl MxmMono03App {
         Self {
             params,
             telemetry,
-            gui_context: None,
             view: 0,
             text_entry: HashMap::new(),
             presets: PresetUi::new(params_for_presets.as_ref()),
@@ -167,26 +145,8 @@ impl MxmMono03App {
     }
 }
 
-impl NiceEguiApp for MxmMono03App {
-    fn build(
-        &mut self,
-        egui_ctx: egui::Context,
-        nice_gui_ctx: GuiContext,
-        _frame: &mut nice_plug_egui::Frame,
-    ) -> Result<(), nice_plug_egui::baseview::HandlerError> {
-        // Once, on open. A `Ui` reads a clone of the style it was built with, so applying mid-frame
-        // would show as an unstyled flash on the first one.
-        mxm_ui::shell::install(&egui_ctx);
-        self.gui_context = Some(nice_gui_ctx);
-        Ok(())
-    }
-
-    fn ui(&mut self, ui: &mut Ui, _frame: &mut nice_plug_egui::Frame) {
-        let Some(gui_context) = self.gui_context.clone() else {
-            // No context means `build` did not run, which should be impossible. Draw nothing rather
-            // than panicking: a panic in a plugin's paint call takes the host with it.
-            return;
-        };
+impl mxm_editor::Panel for MxmMono03App {
+    fn ui(&mut self, ui: &mut Ui, gui_context: &GuiContext) {
         panel(
             ui,
             &self.params,
@@ -197,12 +157,6 @@ impl NiceEguiApp for MxmMono03App {
             &mut self.presets,
             &mut self.nav,
         );
-    }
-
-    fn editor_closed(&mut self) {
-        // Brief §8: the displays stop when the editor closes. Dropping the context is also what
-        // releases the host's callbacks, which nice-plug asks for explicitly.
-        self.gui_context = None;
     }
 }
 
