@@ -43,7 +43,8 @@
 //! is where the cost was worked out. It is also why this instrument's cutoff
 //! control shows a position rather than a frequency.
 
-use crate::{Rng, flush};
+use crate::flush;
+use mxm_rng::Xorshift32;
 use std::f32::consts::PI;
 
 /// Newton steps used to solve the resonance feedback each sample.
@@ -213,7 +214,7 @@ pub struct DiodeLadder {
     /// Previous output, used to start the Newton solve.
     y_prev: f32,
     /// Deterministic excitation source for self-oscillation.
-    rng: Rng,
+    rng: Xorshift32,
 }
 
 impl Default for DiodeLadder {
@@ -229,7 +230,7 @@ impl DiodeLadder {
             s: [0.0; 4],
             y_prev: 0.0,
             // Fixed seed: excitation must be bit-repeatable so it can be tested.
-            rng: Rng::new(0x5EED_0303),
+            rng: Xorshift32::new(0x5EED_0303),
         }
     }
 
@@ -252,7 +253,7 @@ impl DiodeLadder {
     pub fn reset(&mut self) {
         self.s = [0.0; 4];
         self.y_prev = 0.0;
-        self.rng = Rng::new(0x5EED_0303);
+        self.rng = Xorshift32::new(0x5EED_0303);
     }
 
     /// Map a normalised resonance `0..=1` onto **this configuration's own** `k`.
@@ -312,7 +313,7 @@ impl DiodeLadder {
         // (that is `flush`), and it is gated so that "no input, low resonance"
         // stays exactly zero.
         if resonance > EXCITATION_THRESHOLD {
-            u += EXCITATION_LEVEL * self.rng.next_bipolar();
+            u += EXCITATION_LEVEL * self.rng.bipolar_f32();
         }
 
         // Each TPT one-pole gives y = G*x + s/(1+g). Cascading four with *different*

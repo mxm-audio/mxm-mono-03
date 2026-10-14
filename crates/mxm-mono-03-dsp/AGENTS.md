@@ -122,8 +122,8 @@ Does **not** own parameter definitions, ranges, smoothing or the editor — thos
 
 ## Dependencies
 
-- **One runtime dependency, `mxm-modulation`**, dependency-free at this crate's 1.87 floor; the MSRV
-  override rests on that ([NOTES.md § Dependencies](NOTES.md#dependencies-one-at-runtime)).
+- **Two runtime dependencies, `mxm-modulation` and `mxm-rng`**, dependency-free at this crate's 1.87
+  floor; the MSRV override rests on that ([NOTES.md § Dependencies](NOTES.md#dependencies-two-at-runtime)).
 - `[dev-dependencies]` (`mxm-measure`, `mxm-audio-file`, `mxm-audio-file-decode`) reach only tests and
   `examples/`, never a shipped `.clap`; MPL-2.0 symphonia never reaches the shipped graph.
 

@@ -141,7 +141,7 @@ breaks another is a broken change. CI builds and tests on all three, only when s
 
 | Crate | MSRV | Why |
 |---|---|---|
-| `crates/mxm-mono-03-dsp` | **1.87** | The whole voice and its routing. **One runtime dependency**, `mxm-modulation`, dependency-free at this same floor — the routing conversion added it |
+| `crates/mxm-mono-03-dsp` | **1.87** | The whole voice and its routing. **Two runtime dependencies**, `mxm-modulation` and `mxm-rng`, both dependency-free at this same floor — the routing conversion and the shared generators added them |
 | `plugins/mxm-mono-03` | **1.95** | Its editor pulls in egui (raised when the editor landed) |
 
 ## Licensing

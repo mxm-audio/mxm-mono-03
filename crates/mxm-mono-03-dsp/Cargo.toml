@@ -3,14 +3,15 @@ name = "mxm-mono-03-dsp"
 description = "DSP for mxm-mono-03, framework-free and unit-testable"
 version.workspace = true
 edition.workspace = true
-# One runtime dependency, `mxm-modulation`, dependency-free at this same floor: still portable, so it
-# does NOT inherit the 1.95 GUI floor.
+# Two runtime dependencies, `mxm-modulation` and `mxm-rng`, each dependency-free at this same floor:
+# still portable, so it does NOT inherit the 1.95 GUI floor.
 rust-version = "1.87"
 license.workspace = true
 authors.workspace = true
 repository.workspace = true
 
 [dependencies]
+mxm-rng.workspace = true
 mxm-modulation.workspace = true
 
 [features]
