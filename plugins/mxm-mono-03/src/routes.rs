@@ -115,7 +115,7 @@ pub struct TargetRoutes {
 /// on every pair here — and it reads as [`reach`] says.
 fn amount(target: usize, source: usize) -> FloatParam {
     reading::amount_param_at(
-        format!("{} from {}", TARGET_NAMES[target], SOURCE_NAMES[source]),
+        mxm_modulation_params::reading::amount_name(TARGET_NAMES[target], SOURCE_NAMES[source]),
         init_amount(target, source),
         reach(target, source),
         Fader::for_offer(offer(target, source), false),
@@ -148,7 +148,7 @@ fn reach(target: usize, source: usize) -> Reach {
 /// else absent.
 fn present(target: usize, source: usize) -> BoolParam {
     BoolParam::new(
-        format!("{} from {} on", TARGET_NAMES[target], SOURCE_NAMES[source]),
+        mxm_modulation_params::reading::presence_name(TARGET_NAMES[target], SOURCE_NAMES[source]),
         INIT_PRESENT.contains(&(target, source)),
     )
 }
