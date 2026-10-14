@@ -138,8 +138,9 @@ deterministic seeded randomness. These are the monorepo root's and mxm-mono-01's
 # Work Guidance
 
 - Do not extract DSP from this crate without a shared-DSP proposal backed by identical needs in
-  another shipped implementation. Candidates for comparison are denormal flushing, the ladder’s
-  scalar Newton feedback solve, bounded monotonic saturation, PolyBLEP and
+  another shipped implementation. Denormal flushing, the saturator and PolyBLEP already proved
+  identical and are `mxm-dsp`'s (the audit's O1); the remaining candidates for comparison are the
+  ladder’s scalar Newton feedback solve and
   [`docs/filters/09-voicing.md`](https://github.com/mxm-audio/mxm-kit/blob/main/docs/filters/09-voicing.md)’s normalized-resonance model;
   resemblance is not an API.
 - Filter theory is [`docs/filters/`](https://github.com/mxm-audio/mxm-kit/blob/main/docs/filters/README.md); oscillators
