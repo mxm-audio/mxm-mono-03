@@ -52,11 +52,11 @@
 use crate::accent::Accent;
 use crate::envelope::{self, AttackDecay};
 use crate::filter::{self, DiodeConfig, DiodeLadder};
-use crate::flush;
 use crate::oscillator::{Oscillator, Waveform};
 use crate::routing::{
     ACCENT_UNIT, Graph, KEY_UNIT_SEMITONES, Routing, cutoff_octaves, source, target,
 };
+use mxm_dsp::guard::flush;
 use mxm_modulation::standard;
 
 /// How hard the oscillator drives the filter, on the hardware. See the module

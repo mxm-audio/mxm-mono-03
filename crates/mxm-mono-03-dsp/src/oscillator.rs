@@ -28,6 +28,8 @@
 //! evaluated against each edge's own phase distance, so a moving edge is handled
 //! by construction.
 
+use mxm_dsp::blep::poly_blep;
+
 /// Duty cycle at and below [`DUTY_LOW_HZ`]. Secondary, unverified.
 pub const DUTY_AT_LOW: f32 = 0.71;
 /// Duty cycle at and above [`DUTY_HIGH_HZ`]. Secondary, unverified.
@@ -58,23 +60,6 @@ pub fn duty_for(f0: f32) -> f32 {
     let f0 = f0.clamp(DUTY_LOW_HZ, DUTY_HIGH_HZ);
     let t = (f0 / DUTY_LOW_HZ).ln() / (DUTY_HIGH_HZ / DUTY_LOW_HZ).ln();
     DUTY_AT_LOW + (DUTY_AT_HIGH - DUTY_AT_LOW) * t
-}
-
-/// PolyBLEP correction at a discontinuity.
-///
-/// `t` is the phase distance past the edge, `dt` the phase increment per sample.
-/// Returns the correction to add to a naive waveform whose step is +2 (a falling
-/// sawtooth reset is -2, so the caller negates).
-fn poly_blep(t: f32, dt: f32) -> f32 {
-    if t < dt {
-        let x = t / dt;
-        x + x - x * x - 1.0
-    } else if t > 1.0 - dt {
-        let x = (t - 1.0) / dt;
-        x * x + x + x + 1.0
-    } else {
-        0.0
-    }
 }
 
 /// A free-running phase accumulator.

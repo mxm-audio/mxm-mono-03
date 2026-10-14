@@ -200,14 +200,16 @@ property rather than for a repair. **The cutoff clamp is load-bearing in a way w
 it removed, an unclamped coefficient produced a NaN, and *no key down is exact silence* went red
 too, because `NaN × 0` is `NaN` behind a closed amplifier.
 
-## Dependencies: two at runtime
+## Dependencies: three at runtime
 
-**Two runtime dependencies,
-[`mxm-modulation`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-modulation/AGENTS.md) and
-[`mxm-rng`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-rng/AGENTS.md)**, which have
+**Three runtime dependencies,
+[`mxm-modulation`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-modulation/AGENTS.md),
+[`mxm-rng`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-rng/AGENTS.md) and
+[`mxm-dsp`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-dsp/AGENTS.md)**, which have
 none of their own and hold this same 1.87 floor — the routing conversion added the first and the
-shared generators the second (the audit's O3), and the MSRV override still rests on the shipped graph
-staying that small. `cargo tree -p mxm-mono-03-dsp -e normal` shows those crates and nothing else.
+shared generators the second (the audit's O3) and the shared primitives the third (O1), and the MSRV
+override still rests on the shipped graph
+staying that small. `cargo tree -p mxm-mono-03-dsp -e normal` shows those three crates and nothing else.
 
 `[dev-dependencies]` holds **`mxm-measure`**, the collection's measurement rulers — zero dependencies
 at this same floor, reaching only tests and `examples/`, never a shipped `.clap`.

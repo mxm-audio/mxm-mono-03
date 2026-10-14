@@ -43,7 +43,8 @@
 //! is where the cost was worked out. It is also why this instrument's cutoff
 //! control shows a position rather than a frequency.
 
-use crate::flush;
+use mxm_dsp::guard::flush;
+use mxm_dsp::shape::tanh_approx;
 use mxm_rng::Xorshift32;
 use std::f32::consts::PI;
 
@@ -185,24 +186,6 @@ pub fn max_nominal_cutoff_hz(config: DiodeConfig, sample_rate: f32) -> f32 {
 #[inline]
 fn tan_approx(x: f64) -> f64 {
     x.tan()
-}
-
-/// Bounded, monotonic `tanh` approximation — a [7/6] Pade form.
-///
-/// The input clamp is load-bearing, not defensive: without it the rational form
-/// diverges for large `x`, which would break the boundedness argument the whole
-/// filter design rests on. `tanh(4) = 0.9993`, so the curve is essentially flat
-/// where the clamp takes over.
-///
-/// The output clamp guards the last ulp: the invariant `|tanh_approx(x)| <= 1` is
-/// what bounds the filter, so it should be exactly true in `f32`, not nearly true.
-#[inline]
-pub fn tanh_approx(x: f32) -> f32 {
-    let x = x.clamp(-4.0, 4.0);
-    let x2 = x * x;
-    let num = x * (135135.0 + x2 * (17325.0 + x2 * (378.0 + x2)));
-    let den = 135135.0 + x2 * (62370.0 + x2 * (3150.0 + x2 * 28.0));
-    (num / den).clamp(-1.0, 1.0)
 }
 
 /// A 4-pole diode ladder lowpass.

@@ -28,7 +28,7 @@
 //! minimum time. So **an accented note is a different envelope, not a louder
 //! one** — see [`crate::accent`], which owns the rest of that behaviour.
 
-use crate::flush;
+use mxm_dsp::guard::flush;
 
 /// Attack time for both envelopes. Fast enough to read as instant, slow enough
 /// not to click.

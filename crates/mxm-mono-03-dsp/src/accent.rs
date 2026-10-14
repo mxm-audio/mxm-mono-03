@@ -43,7 +43,7 @@
 //! constants are chosen to produce the attested behaviour and are the first thing
 //! a listening comparison should correct.
 
-use crate::flush;
+use mxm_dsp::guard::flush;
 
 /// How fast the sweep capacitor charges while an accented note is sounding.
 ///
