@@ -31,6 +31,7 @@ rules, the editor contract — live in the parent and are not restated here. Thi
 | What | Value |
 |---|---|
 | `CLAP_ID` | `dk.mxm.mxm-mono-03` — assembled from `plugin_name!` in `src/lib.rs`, **not** from `CARGO_PKG_NAME`, so renaming the directory cannot move it |
+| `VST3_CLASS_ID` | `VST3_CLASS_ID` in `src/lib.rs`, the CLAP id's hash written out |
 | Parameter `#[id]`s | **Panel:** `tune` `waveform` `bendrange` `cutoff` `resonance` `decay` `accent` `accentnote` `slide` `volume`<br>**Advanced:** `slidetime` `ampattack` `ampdecay` `filterattack` `accentdecay` `accentsweep` `drive` `filtermodel` |
 | Routing `#[id]`s | `mod_<target>_<source>`, the amount, and `mod_<target>_<source>on`, the presence — targets `cutoff` `res` `amp`, sources `key` `vel` `wheel` `press` `bend` `env` `accent` `accentlevel` `osc`. Written out in `routes::ROUTE_IDS`, which `the_id_table_is_what_the_derive_actually_produces` holds to the derive |
 | Retired `#[id]`s | `envmod` — never to be reused |
