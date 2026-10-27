@@ -33,77 +33,32 @@ impl mxm_preset::Instrument for MxmMono03Params {
         &self.preset
     }
 
-    fn factory_files(&self) -> &'static [(&'static str, &'static str)] {
+    /// The installed set, but in a unit test, which is loaded from no bundle: the repository's.
+    #[cfg(test)]
+    fn factory_files(&self) -> Vec<(String, String)> {
         FACTORY_FILES
+            .iter()
+            .map(|(name, json)| ((*name).to_owned(), (*json).to_owned()))
+            .collect()
     }
 }
 
-/// The factory set, compiled in.
-///
-/// **Fifty files, and Init is not one of them** — see [`Preset::init`]. These fifty are
-/// *content*: a sound nobody can read is a sound nobody can learn from, so they are files rather
-/// than code.
-pub const FACTORY_FILES: &[(&str, &str)] = &[
-    ("Acid line", include_str!("../presets/acid-line.json")),
-    ("Squelch", include_str!("../presets/squelch.json")),
-    ("Deep acid", include_str!("../presets/deep-acid.json")),
-    ("Square acid", include_str!("../presets/square-acid.json")),
-    ("Rubber bass", include_str!("../presets/rubber-bass.json")),
-    ("Round bass", include_str!("../presets/round-bass.json")),
-    ("Hollow knock", include_str!("../presets/hollow-knock.json")),
-    ("Dark drone", include_str!("../presets/dark-drone.json")),
-    ("Bright saw", include_str!("../presets/bright-saw.json")),
-    ("Buzz lead", include_str!("../presets/buzz-lead.json")),
-    ("Snap pluck", include_str!("../presets/snap-pluck.json")),
-    ("Chirp", include_str!("../presets/chirp.json")),
-    ("Slow sweep", include_str!("../presets/slow-sweep.json")),
-    ("Overdriven", include_str!("../presets/overdriven.json")),
-    ("Three diode", include_str!("../presets/three-diode.json")),
-    ("Lazy slide", include_str!("../presets/lazy-slide.json")),
-    ("Soft square", include_str!("../presets/soft-square.json")),
-    ("Hard accent", include_str!("../presets/hard-accent.json")),
-    (
-        "Climbing accents",
-        include_str!("../presets/climbing-accents.json"),
-    ),
-    ("Low rumble", include_str!("../presets/low-rumble.json")),
-    ("Classic acid", include_str!("../presets/classic-acid.json")),
-    ("Rolling bass", include_str!("../presets/rolling-bass.json")),
-    ("Detroit stab", include_str!("../presets/detroit-stab.json")),
-    ("Wet squelch", include_str!("../presets/wet-squelch.json")),
-    ("Dry thump", include_str!("../presets/dry-thump.json")),
-    (
-        "Warm saw bass",
-        include_str!("../presets/warm-saw-bass.json"),
-    ),
-    ("Woody square", include_str!("../presets/woody-square.json")),
-    ("Long acid", include_str!("../presets/long-acid.json")),
-    ("Short acid", include_str!("../presets/short-acid.json")),
-    (
-        "Hoover accent",
-        include_str!("../presets/hoover-accent.json"),
-    ),
-    ("Fizz", include_str!("../presets/fizz.json")),
-    ("Sub thud", include_str!("../presets/sub-thud.json")),
-    ("Drive lead", include_str!("../presets/drive-lead.json")),
-    ("Whistle lead", include_str!("../presets/whistle-lead.json")),
-    ("Nasal lead", include_str!("../presets/nasal-lead.json")),
-    ("Bright pluck", include_str!("../presets/bright-pluck.json")),
-    ("Muted pluck", include_str!("../presets/muted-pluck.json")),
-    ("Ping", include_str!("../presets/ping.json")),
-    ("Bongo", include_str!("../presets/bongo.json")),
-    ("Kick tick", include_str!("../presets/kick-tick.json")),
-    ("Wood block", include_str!("../presets/wood-block.json")),
-    ("Laser", include_str!("../presets/laser.json")),
-    ("Filter howl", include_str!("../presets/filter-howl.json")),
-    ("Slow open", include_str!("../presets/slow-open.json")),
-    ("Hum drone", include_str!("../presets/hum-drone.json")),
-    ("Accent run", include_str!("../presets/accent-run.json")),
-    ("Slide run", include_str!("../presets/slide-run.json")),
-    ("Gritty saw", include_str!("../presets/gritty-saw.json")),
-    ("Clean square", include_str!("../presets/clean-square.json")),
-    ("Mid acid", include_str!("../presets/mid-acid.json")),
-];
+/// The factory set as it ships, `(name, json)` in its order: the repository's `presets/`, which
+/// is installed beside the plugin and read there (`mxm_preset::installed_factory_dir`). For the
+/// tests, the integration tests and the audits, which are loaded from no bundle; the plugin itself
+/// never reads it.
+pub static FACTORY_FILES: std::sync::LazyLock<Vec<(&'static str, &'static str)>> =
+    std::sync::LazyLock::new(|| {
+        let folder = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("presets");
+        mxm_preset::read_factory_dir(&folder)
+            .into_iter()
+            .map(|(file, json)| {
+                let name = mxm_preset::Preset::parse(&json, crate::CLAP_ID)
+                    .map_or(file, |preset| preset.name);
+                (&*String::leak(name), &*String::leak(json))
+            })
+            .collect()
+    });
 
 #[cfg(test)]
 mod tests {
@@ -882,7 +837,7 @@ mod tests {
         // This instrument's oscillator always sounds, so audibility is the volume and the filter.
         // A preset with the output at nothing, or the filter shut with no envelope to open it,
         // loads without complaint and reads as the instrument being broken.
-        for (name, text) in FACTORY_FILES {
+        for (name, text) in FACTORY_FILES.iter() {
             let preset = Preset::parse(text, crate::CLAP_ID).expect("parses");
             let v = |id: &str| preset.params.get(id).map_or(0.0, |value| value.v);
             assert!(v("volume") > 0.05, "{name:?} is turned down to nothing");
@@ -910,7 +865,7 @@ mod tests {
         // A sound is saved with its category (the owner's rule, 2026-09-04), and the factory set
         // is where a person first sees what the categories mean. *Uncategorised* is for files
         // written before the field existed, not for sounds this instrument ships.
-        for (name, text) in FACTORY_FILES {
+        for (name, text) in FACTORY_FILES.iter() {
             let preset = Preset::parse(text, crate::CLAP_ID).expect("parses");
             assert_ne!(
                 preset.category,
@@ -924,7 +879,7 @@ mod tests {
     fn every_factory_preset_parses_and_is_for_this_instrument() {
         // A malformed factory preset is a build mistake, not a user's, so it is caught here rather
         // than skipped quietly in the browser.
-        for (name, text) in FACTORY_FILES {
+        for (name, text) in FACTORY_FILES.iter() {
             let preset = Preset::parse(text, crate::CLAP_ID)
                 .unwrap_or_else(|e| panic!("factory preset {name:?} does not parse: {e}"));
             assert_eq!(preset.name, *name, "the file's name must match its listing");
@@ -936,7 +891,7 @@ mod tests {
         // The one that catches a factory preset written before a parameter existed: it would load
         // and quietly leave that parameter wherever the last patch left it.
         let params = params();
-        for (name, text) in FACTORY_FILES {
+        for (name, text) in FACTORY_FILES.iter() {
             let preset = Preset::parse(text, crate::CLAP_ID).expect("parses");
             let (_, problems) = preset.resolve(&params);
             assert!(
@@ -959,7 +914,7 @@ mod tests {
         // Accent-note and slide are the sequencer's per-step buttons. A preset that shipped one on
         // would accent or slide **every** note the moment it loaded, which is not a sound — it is a
         // stuck button.
-        for (name, text) in FACTORY_FILES {
+        for (name, text) in FACTORY_FILES.iter() {
             let preset = Preset::parse(text, crate::CLAP_ID).expect("parses");
             let v = |id: &str| preset.params.get(id).map_or(0.0, |value| value.v);
             assert!(v("accentnote") < 0.5, "{name:?} accents every note");
